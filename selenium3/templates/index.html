@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ㅎㅇ</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+            $(document).ready(function(){
+                $("button").click(function(){
+                    var search = $('input[name = search]').val();
+                    var number = $('input[name = number]').val();
+                $.ajax({
+                    url : '/search',
+                    data : {search_name : search, search_number : number},
+                    type : 'POST',
+
+                    success : function(response){
+                        var list = response['list'];
+                        var list_href = response['list_href']
+                        var list_img_src = response['list_img_src']
+                        var nums = response['nums']
+                        alert(nums+"개의 기사가 검색됐어요")
+                        for(i in list){
+                            $("#middle").prepend("<div class='col-sm' id='grid'>"+"</div>")
+                            $("#grid").prepend("<div class='card' style='width: 18rem; border-color: black;' id='card'>"+"<img src='"+list_img_src[i]+"' width='120' height='120' alt='이미지를 찾지 못했어요.'>"+"</div>"+"<br>")
+                            $("#card").append("<div class='card-body' id='cardBody'>"+list[i]+"</div>")
+                            $("#cardBody").append("<br>"+"<a href='"+list_href[i]+"' class='btn btn-link' target='_blank'>기사보기</a>")
+                        }
+
+                    },
+                    error : function(error){
+                            alert("오류입니다")
+                        },
+                    });
+                });
+
+            });
+
+    </script>
+    <style>
+        body {
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+        h1{
+             font-weight: bold;
+             color: #f89b00;
+        }
+        h3{
+            opacity: 0.5;
+            color: #f89b00;
+        }
+        div{
+            background-color: black;
+            color: white;
+            border-color: black;
+        }
+        img {
+            display:block;
+            margin: 0px auto;
+            background: black;
+            background-color: black;
+            text-align: center;
+        }
+        input{
+            height: 120%;
+            width: 55%;
+        }
+        input::placeholder{
+            color: #FF8868;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        #blank{
+            width:100%;
+            height: 80px;
+        }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="blank">
+    <nav class="navbar">
+        <span class="navbar-brand mb-0 h4" style="color: white; font-size: 12px;">슬옹</span>
+        <span class="navbar-brand mb-0 h4" style="color: white; font-size: 12px; test-align: center;" id="showNums"></span>
+        <span class="navbar-brand mb-0 h4" style="color: white; font-size: 12px; test-align: right;">0204</span>
+    </nav>
+</div>
+<div name="top" class="container">
+    <h1>구글에 게제된 기사를 가져와보자!<br></h1>
+    <h3>(페이지 수는 2 이상이에요)</h3><br>
+    <div>
+        <input class="alert alert-warning" type="text" name="search" placeholder="검색할 키워드를 입력해 주세요." required maxlength="100"><br><br>
+        <input class="alert alert-warning" type="number" name="number" placeholder="크롤링할 페이지 수를 입력해 주세요." min="2" required><br><br>
+        <button type="submit" class="btn btn-warning btn-lg">검색하기</button><Br><hr color="#ffff4a" size="10" width="100%">
+    </div>
+</div>
+<div class="container">
+    <div class="row" id="middle">
+        <div class="row" id="grid">
+        </div>
+    </div>
+</div>
+</body>
+</html>
